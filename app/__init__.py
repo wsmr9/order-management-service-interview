@@ -33,6 +33,6 @@ def create_app():
     # Import and register Blueprints for route handling
     from .routes.order_routes import order_blueprint
     app.register_blueprint(order_blueprint)
-    
+
     # Return the configured Flask app instance
     return app

@@ -8,6 +8,7 @@ DEBUG_MODE = os.getenv('DEBUG', 'False').lower() in ['true', '1', 't']
 
 app = create_app()
 
+
 origins = [
     "http://localhost:3000",
     "http://ecommerce-platform-interview.s3-website-us-east-1.amazonaws.com"
