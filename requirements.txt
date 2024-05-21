@@ -1,0 +1,7 @@
+Werkzeug==2.0.1
+Flask==2.0.2
+Flask-SQLAlchemy==2.5.1
+SQLAlchemy==1.4.22  # Esta es una versión que debería ser compatible con Flask-SQLAlchemy 2.5.1
+psycopg2-binary==2.9.3
+python-dotenv==0.19.1
+flask-cors==3.0.10
