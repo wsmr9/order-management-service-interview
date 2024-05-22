@@ -6,7 +6,6 @@ phases:
       - echo Logging in to Amazon ECR...
       - echo $AWS_DEFAULT_REGION
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 179916365881.dkr.ecr.us-east-1.amazonaws.com
-
       - REPOSITORY_URI=179916365881.dkr.ecr.us-east-1.amazonaws.com/order-management-service-ecr
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
@@ -14,7 +13,7 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
-      - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
+      - docker build -t $REPOSITORY_URI:$IMAGE_TAG --build-arg DATABASE_URL=$DATABASE_URL .
       - docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:latest
   post_build:
     commands:
@@ -25,4 +24,5 @@ phases:
       - printf '[{"name":"container-name","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 
 artifacts:
-    files: imagedefinitions.json
+  files:
+    imagedefinitions.json
