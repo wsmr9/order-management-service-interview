@@ -1,30 +1,33 @@
-version: '3.3'
+version: '3.3'  # Specifies the version of the Docker Compose file format. Version 3.3 supports a variety of production and development features suitable for managing multi-container setups.
 
 services:
+  # Defines a service for a PostgreSQL database.
   postgres:
-    image: postgres:13
+    image: postgres:13  # Specifies the Docker image to use, here it's PostgreSQL version 13.
     environment:
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_USER=${POSTGRES_USER}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}  # Sets the PostgreSQL database name, retrieved from an environment variable.
+      - POSTGRES_USER=${POSTGRES_USER}  # Sets the PostgreSQL user name, retrieved from an environment variable.
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}  # Sets the PostgreSQL user password, retrieved from an environment variable.
     ports:
-      - "5432:5432"
+      - "5432:5432"  # Maps port 5432 on the host to port 5432 on the container, which is the default PostgreSQL port.
     volumes:
-      - ./postgres_data_order:/var/lib/postgresql/data
+      - ./postgres_data_order:/var/lib/postgresql/data  # Maps a directory from the host (./postgres_data_order) to a directory in the container (/var/lib/postgresql/data) to persist database data.
 
+  # Defines a service for pgAdmin, a web interface for managing PostgreSQL databases.
   pgadmin:
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4  # Specifies the Docker image for pgAdmin 4.
     environment:
-      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
-      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}  # Sets the default email for pgAdmin, used to log in to the pgAdmin web interface.
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}  # Sets the default password for pgAdmin.
     ports:
-      - "5050:80"
+      - "5050:80"  # Maps port 5050 on the host to port 80 on the container, where pgAdmin is accessed.
 
+  # Defines a service for the application which uses Flask.
   flask-app:
-    build: .
+    build: .  # Builds the Docker image for the Flask application using the Dockerfile in the current directory.
     ports:
-      - "5000:5000"
+      - "5000:5000"  # Maps port 5000 on the host to port 5000 on the container, typically used by Flask applications.
     environment:
-      - DATABASE_URL=${DATABASE_URL}
+      - DATABASE_URL=${DATABASE_URL}  # Sets the database URL, retrieved from an environment variable, for the Flask application to connect to the database.
     depends_on:
-      - postgres
+      - postgres  # Specifies that this service depends on the postgres service, ensuring it starts first and is available when the Flask application starts.
