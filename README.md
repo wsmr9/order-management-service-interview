@@ -89,6 +89,18 @@ To verify that your backend is set up correctly, navigate to the following URL, 
 
 Replace `[PORT]` with the port number you configured in your `.env` file.
 
+IF THE APPLICATION CONTAINER ORDERS ON PORT ESTABLISHED DID NOT RISE, PLEASE RUN THIS COMMAND AGAIN AND VERIFY
+
+```bash
+    docker-compose up -d
+```
+
+THEN
+
+```bash
+    http://localhost:[PORT]/orders
+```
+
 Troubleshooting
 ---------------
 
