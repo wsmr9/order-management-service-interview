@@ -3,26 +3,24 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo Logging in to Amazon ECR...  # Outputs a log message to indicate the start of the login process to Amazon ECR.
-      - echo $AWS_DEFAULT_REGION  # Displays the AWS region that the build process is using, useful for debugging and verification.
-      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 179916365881.dkr.ecr.us-east-1.amazonaws.com  # Logs into Amazon ECR using the AWS CLI to allow Docker to push images to the ECR repository.
-      - REPOSITORY_URI=179916365881.dkr.ecr.us-east-1.amazonaws.com/order-management-service-ecr  # Sets the ECR repository URI where the Docker image will be pushed.
+      - echo Logging in to Amazon ECR... # Outputs a log message to indicate the start of the login process to Amazon ECR.
+      - echo $AWS_DEFAULT_REGION # Displays the AWS region that the build process is using, useful for debugging and verification.
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 179916365881.dkr.ecr.us-east-1.amazonaws.com # Logs into Amazon ECR using the AWS CLI to allow Docker to push images to the ECR repository.
+      - REPOSITORY_URI=179916365881.dkr.ecr.us-east-1.amazonaws.com/order-management-service-ecr # Sets the ECR repository URI where the Docker image will be pushed.
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)  # Extracts the first 7 characters of the Git commit hash to use as the image tag.
       - IMAGE_TAG=${COMMIT_HASH:=latest}  # Sets the image tag to the commit hash; defaults to 'latest' if the commit hash is unavailable.
-
   build:
     commands:
       - echo Build started on `date`  # Logs the start time and date of the build process, helpful for tracking when the build was initiated.
-      - echo Building the Docker image...  # Indicates that the Docker image build process is starting.
-      - docker build -t $REPOSITORY_URI:$IMAGE_TAG --build-arg DATABASE_URL=$DATABASE_URL .  # Builds the Docker image using the specified repository URI and tag, and passes the DATABASE_URL as a build argument.
+      - echo Building the Docker image...   # Indicates that the Docker image build process is starting.
+      - docker build -t $REPOSITORY_URI:$IMAGE_TAG --build-arg DATABASE_URL=$DATABASE_URL . # Builds the Docker image using the specified repository URI and tag, and passes the DATABASE_URL as a build argument.
       - docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:latest  # Additionally tags the built image as 'latest', useful for keeping a track of the most recent build.
-
   post_build:
     commands:
       - echo Pushing the Docker image...  # Logs a message indicating that the Docker image is about to be pushed to the ECR.
-      - docker push $REPOSITORY_URI:$IMAGE_TAG  # Pushes the Docker image to the ECR using the tag derived from the commit hash.
-      - docker push $REPOSITORY_URI:latest  # Pushes the Docker image to the ECR using the 'latest' tag.
-      - echo Writing image definitions file...  # Indicates the creation of the image definitions file, which is used in the deployment process.
+      - docker push $REPOSITORY_URI:$IMAGE_TAG # Pushes the Docker image to the ECR using the tag derived from the commit hash.
+      - docker push $REPOSITORY_URI:latest # Pushes the Docker image to the ECR using the 'latest' tag.
+      - echo Writing image definitions file... # Indicates the creation of the image definitions file, which is used in the deployment process.
       - printf '[{"name":"container-name","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json  # Creates an image definitions file that specifies which container image to use in the deployment, storing it as an artifact.
 
 artifacts:
