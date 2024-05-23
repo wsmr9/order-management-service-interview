@@ -11,7 +11,6 @@ app = create_app()
 
 origins = [
     "http://localhost:3000",
-    "http://ecommerce-platform-interview.s3-website-us-east-1.amazonaws.com"
 ]
 
 cors = CORS(app, resources={r"/*":

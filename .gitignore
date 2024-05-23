@@ -199,4 +199,6 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+postgres_data_order
+
 # End of https://www.toptal.com/developers/gitignore/api/python,windows
