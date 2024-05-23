@@ -36,7 +36,7 @@ Open the `.env` file and make any necessary changes to fit your local developmen
 ### Step 3: Create Required Directories
 
 
-Create a directory within the root of the project to store MySQL data:
+Create a directory within the root of the project to store PosgreSQL data:
 
 ```bash
     mkdir postgres_data_order
@@ -54,13 +54,13 @@ Use Docker Compose to launch the services defined in your `docker-compose.yml`:
 This command will start the following services:
 - **Postgres Database**: Hosts the database for the application.
 - **PgAmdin**: Provides a web interface for database management.
-- **Order Management Service**: The backend service for managing product data.
+- **Order Management Service**: The backend service for managing order data.
 
 
 Verifying the Installation
 --------------------------
 
-To verify that your backend is set up correctly, navigate to the following URL, which will access the Product Catalog Service and display the products:
+To verify that your backend is set up correctly, navigate to the following URL, which will access the Order Management Service and display the orders:
 
 ```bash
     http://localhost:[PORT]/orders
