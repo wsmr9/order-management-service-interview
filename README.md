@@ -19,8 +19,8 @@ Before you start, ensure you have the following installed on your system:
 Clone the project repository and navigate into the directory:
 
 ```bash
-    git clone [URL of the repository]
-    cd [repository-name]
+    git clone https://github.com/wsmr9/order-management-service-interview.git
+    cd order-management-service-interview
 ```
 
 ### Step 2: Set Up Environment Variables
